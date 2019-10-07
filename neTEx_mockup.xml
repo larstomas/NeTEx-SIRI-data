@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    This example is based on the Stena line as presented in 2019.
+-->
+<PublicationDelivery
+    version="1.07:NO-NeTEx-networktimetable:1.1"
+    xmlns="http://www.netex.org.uk/netex"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <PublicationTimestamp>2016-05-20T15:03:03Z</PublicationTimestamp>
+    <ParticipantRef>RUT</ParticipantRef>
+    <!-- Description is optional -->
+    <Description>Stena line</Description>
+
+    <dataObjects>
+        <!-- =========================================== -->
+        <CompositeFrame version="1" created="2015-12-13T00:00:00Z" id="RUT:Norway:CompositeFrame:0061">
+            <ValidBetween></ValidBetween>
+
+            <codespaces>
+                <!-- Codespace for Ruter -->
+                <Codespace id="ruter">
+                    <Xmlns>RUT</Xmlns>
+                    <XmlnsUrl>http://www.ruter.no/</XmlnsUrl>
+                </Codespace>
+                <!-- Codespace for national stop place registry -->
+                <Codespace id="nsr">
+                    <Xmlns>NSR</Xmlns>
+                    <XmlnsUrl>http://www.rutebanken.no/nasjonltstoppestedregister</XmlnsUrl>
+                </Codespace>
+            </codespaces>
+
+            <FrameDefaults>
+                <!-- All elements with id-attributes are prefixed with this codespace (in this case RUT) -->
+                <DefaultCodespaceRef ref="ruter"/>
+                <DefaultLocale>
+                    <TimeZone>CET</TimeZone>
+                    <SummerTimeZone>CEST</SummerTimeZone>
+                    <!-- All texts are by default in Norwegian, unless stated otherwise. -->
+                    <DefaultLanguage>no</DefaultLanguage>
+                </DefaultLocale>
+                <!-- All coordinates must be WGS84 -->
+            </FrameDefaults>
+
+            <frames>
+                <!-- =========================================== -->
+                <ResourceFrame version="1" id="RUT:ResourceFrame:RF1">
+                    <organisations>
+                        <!-- This structure can be more complex when for example adding lost & found information -->
+                        <Authority version="1" id="RUT:Authority:1">
+                            <CompanyNumber>991609407</CompanyNumber>
+                            <!-- Organisation number -->
+                            <Name>Ruter</Name>
+                            <LegalName>RUTER AS</LegalName>
+                            <OrganisationType>authority</OrganisationType>
+                        </Authority>
+                        <!-- Presumed operator is Unibuss -->
+                        <Operator version="1" id="RUT:Operator:1">
+                            <CompanyNumber>985615616</CompanyNumber>
+                            <Name>Stena Adventurer</Name>
+                            <LegalName>UNIBUSS AS</LegalName>
+                            <ContactDetails>
+                                <Phone>0047 177</Phone>
+                                <Url>http://www.ruter.no</Url>
+                                <FurtherDetails>Kontaktskjema på websider</FurtherDetails>
+                            </ContactDetails>
+                        </Operator>
+                    </organisations>
+                </ResourceFrame>
+
+                <!--
+                Stop place information is not to be included in the network-timetable profile,
+                but reference stops in the national stop place registry.
+                Stop places in this example are included to illustrate the full structure of the data.
+                -->
+                <SiteFrame version="1" id="RUT:SiteFrame:SF01">
+                    <stopPlaces>
+                        <!-- Stops use the codespace NSR since they are "owned" by the national stop place registry -->
+                        <StopPlace version="1" id="NSR:StopPlace:03011522">
+                            <Name>Gothenburg</Name>
+                            <quays>
+                                <Quay version="1" id="NSR:Quay:0301152202"/>
+                            </quays>
+                        </StopPlace>
+                        <StopPlace version="1" id="NSR:StopPlace:03011521">
+                            <Name>Kiel</Name>
+                            <quays>
+                                <Quay version="1" id="NSR:Quay:0301152101"/>
+                                <Quay version="1" id="NSR:Quay:0301152102"/>
+                            </quays>
+                        </StopPlace>
+                    </stopPlaces>
+                </SiteFrame>
+
+
+                <ServiceFrame version="1" id="RUT:ServiceFrame:0061">
+                    <!--
+                    Network is just a grouping of lines under a common "umbrella". A Line in turn is a group of Routes using the
+                    same public reference (line number/PublicCode). In this example "61A"
+                    -->
+                    <Network version="1" changed="2015-12-13T00:00:00Z" id="RUT:GroupOfLine:RuterBuss">
+                        <Name>Ruter#</Name>
+                    </Network>
+                    <!--
+                    All route points are listed here. The example contains only StopPoints, but there could also be other
+                    types of points, such as TimingPoints.
+                    If the Line has several Routes, all RoutePoints must be listed here. The StopPoints actually used in each
+                    Route is listed in each respective Route.
+                    -->
+                    <routePoints>
+                        <!-- Gothenburg-->
+                        <RoutePoint version="1" id="RUT:RoutePoint:0061101A0A0061101001">
+                            <projections>
+                                <PointProjection version="1" id="RUT:PointProjection:0061101A0A0061101001">
+                                    <ProjectToPointRef version="1" ref="RUT:ScheduledStopPoint:0061101001"/>
+                                </PointProjection>
+                            </projections>
+                        </RoutePoint>
+                        <!-- Kiel -->
+                        <RoutePoint version="1" id="RUT:RoutePoint:0061101A6A0061101007">
+                            <projections>
+                                <PointProjection version="1" id="RUT:PointProjection:0061101A6A0061101007">
+                                    <ProjectToPointRef version="1" ref="RUT:ScheduledStopPoint:0061101007"/>
+                                </PointProjection>
+                            </projections>
+                        </RoutePoint>
+                    </routePoints>
+
+                    <routes>
+                        <Route version="1" id="RUT:Route:0061101">
+                            <Name>Gothenburg - Kiel</Name>
+                            <LineRef ref="RUT:Line:0061"/>
+                            <!-- The definition of direction. This example is a circular trip in a clockwise direction. -->
+                            <DirectionType>clockwise</DirectionType>
+                            <pointsInSequence>
+                                <PointOnRoute version="1" id="RUT:PointOnRoute:0061101001-0" order="1">
+                                    <RoutePointRef version="1" ref="RUT:RoutePoint:0061101A0A0061101001"/>
+                                </PointOnRoute>
+                                <PointOnRoute version="1" id="RUT:PointOnRoute:0061101007-6" order="4">
+                                    <RoutePointRef version="1" ref="RUT:RoutePoint:0061101A6A0061101007"/>
+                                </PointOnRoute>
+                            </pointsInSequence>
+                        </Route>
+                    </routes>
+
+                    <lines>
+                        <!-- Only one line defined; 61A -->
+                        <Line version="1" id="RUT:Line:0061">
+                            <Name>Gothenburg - Kiel</Name>
+                            <ShortName>test</ShortName>
+                            <TransportMode>ship</TransportMode>
+                            <TransportSubmode>
+                                <BusSubmode>localShip</BusSubmode>
+                            </TransportSubmode>
+                            <PublicCode>61A</PublicCode>
+                            <OperatorRef ref="RUT:Operator:1"/>
+                            <routes>
+                                <!-- This Line has no variations, and thus only has one Route -->
+                                <RouteRef version="1" ref="RUT:Route:0061101"/>
+                            </routes>
+                        </Line>
+                    </lines>
+
+                    <!--
+                    It is presumed here that two texts are displayed on the bus (above the front window).
+                    At the beginning of the departure "Solfjellet", up until the stop "Solfjellet". Thereafter "Tveita T"
+                    all the way back to the stop "Tveita T". These texts are referenced to in Calls, further down the example.
+                    -->
+                    <destinationDisplays>
+                        <DestinationDisplay version="1" id="RUT:DestinationDisplay:DST_Solfjellet">
+                            <FrontText>Kiel</FrontText>
+                        </DestinationDisplay>
+                        <DestinationDisplay version="1" id="RUT:DestinationDisplay:DST_TveitaT">
+                            <FrontText>Gothenburg</FrontText>
+                        </DestinationDisplay>
+                    </destinationDisplays>
+                    <!-- These are all the stops served by 61A -->
+                    <scheduledStopPoints>
+                        <ScheduledStopPoint version="1" id="RUT:ScheduledStopPoint:0061101001">
+                            <Name>Gothenburg</Name>
+                            <Gate version="1" id="RUT:Gate:0061101001">
+                                <GateNumber>22</GateNumber>
+                            </Gate>
+                        </ScheduledStopPoint>
+                        <ScheduledStopPoint version="1" id="RUT:ScheduledStopPoint:0061101006">
+                            <Name>Kiel</Name>
+                            <Gate version="1" id="RUT:Gate:0061101001">
+                                <GateNumber>26</GateNumber>
+                            </Gate>
+                        </ScheduledStopPoint>
+                    </scheduledStopPoints>
+
+                    <!--
+                    Reference from ScheduledStopPoint to StopPlace/Quay. Please note that StopPlace and Quay
+                    belong to the NSR codespace, while the ScheduledStopPoint belongs to the RUT codespace -->
+                    <stopAssignments>
+                        <PassengerStopAssignment version="1" order="1" id="RUT:PassengerStopAssignment:0061101001">
+                            <!-- Which ScheduledStopPoint is referenced ... -->
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101001"/>
+                            <!-- .. which StopPlace ... and if possible -->
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011521"/>
+                            <!-- which Quay the vehicle stops at -->
+                            <QuayRef version="1" ref="NSR:Quay:0301152101"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="2" id="RUT:PassengerStopAssignment:0061101002">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101002"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011525"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301152501"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="3" id="RUT:PassengerStopAssignment:0061101003">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101003"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011536"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301153601"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="4" id="RUT:PassengerStopAssignment:0061101004">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101004"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011537"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301153701"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="5" id="RUT:PassengerStopAssignment:0061101005">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101005"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011525"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301152502"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="6" id="RUT:PassengerStopAssignment:0061101006">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101006"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011522"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301152202"/>
+                        </PassengerStopAssignment>
+                        <PassengerStopAssignment version="1" order="7" id="RUT:PassengerStopAssignment:0061101007">
+                            <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101007"/>
+                            <StopPlaceRef version="1" ref="NSR:StopPlace:03011521"/>
+                            <QuayRef version="1" ref="NSR:Quay:0301152102"/>
+                        </PassengerStopAssignment>
+                    </stopAssignments>
+
+                    <!-- These are all the JourneyPatterns used by 61A. For this particular line there is only one pattern. -->
+                    <journeyPatterns>
+                        <JourneyPattern version="1" id="RUT:JourneyPattern:0061101">
+                            <RouteRef version="1" ref="RUT:Route:0061101"/>
+                            <!-- Sequential order of stops -->
+                            <pointsInSequence>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101002" order="1">
+                                    <!-- Reference to which ScheduledStopPoint... -->
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101001"/>
+                                    <ForAlighting>false</ForAlighting>
+                                    <!-- Destination text displayed on the bus -->
+                                    <DestinationDisplayRef ref="RUT:DestinationDisplay:DST_Solfjellet"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101002" order="2">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101002"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101003" order="3">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101003"/>
+                                    <!-- From this point on the destination text changes from Solfjellet to Tveita T -->
+                                    <DestinationDisplayRef ref="RUT:DestinationDisplay:DST_TveitaT"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101004" order="4">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101004"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101005" order="5">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101005"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101006" order="6">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101006"/>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101007" order="7">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101007"/>
+                                    <ForBoarding>false</ForBoarding>
+                                </StopPointInJourneyPattern>
+                                <StopPointInJourneyPattern version="1" id="RUT:StopPointInJourneyPattern:0061101007" order="8">
+                                    <ScheduledStopPointRef version="1" ref="RUT:ScheduledStopPoint:0061101007"/>
+                                    <ForBoarding>false</ForBoarding>
+                                </StopPointInJourneyPattern>
+                            </pointsInSequence>
+                        </JourneyPattern>
+                    </journeyPatterns>
+
+                    <notices>
+                        <!-- This notice is modelled for the entire Line, and not specificly related to any stops or trips. -->
+                        <Notice version="1" id="RUT:Notice:1">
+                            <Text>I boligveiene kan buss 61A ogs&#229; stoppe utenom de faste holdeplassene. Husk &#229; gi stoppsignal!</Text>
+                        </Notice>
+                    </notices>
+                    <noticeAssignments>
+                        <NoticeAssignment version="1" id="RUT:NoticeAssignment:1" order="1">
+                            <NoticeRef ref="RUT:Notice:1" version="1"/>
+                            <NoticedObjectRef ref="RUT:Route:0061101" version="1"/>
+                        </NoticeAssignment>
+                    </noticeAssignments>
+                </ServiceFrame>
+
+
+                <ServiceCalendarFrame version="1" id="RUT:ServiceCalendarFrame:SCF01">
+                    <ServiceCalendar version="1" id="RUT:ServiceCalendar:1">
+                        <Name>Ukedager inkludert lørdag, hver hele time kvart over</Name>
+                        <dayTypes>
+                            <!-- This calendar specifies Monday-Saturday -->
+                            <DayType version="1" id="RUT:DayType:MonSat">
+                                <Name>Ukedager og lørdager</Name>
+                                <properties>
+                                    <PropertyOfDay>
+                                        <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday Saturday</DaysOfWeek>
+                                    </PropertyOfDay>
+                                </properties>
+                            </DayType>
+                        </dayTypes>
+                        <timebands>
+                            <Timeband version="1" id="RUT:Timeband:TM15">
+                                <!--Name>15 minutes past the hour</Name-->
+                                <StartTime>00:15:00</StartTime>
+                                <EndTime>00:15:00</EndTime>
+                            </Timeband>
+                        </timebands>
+                        <operatingPeriods>
+                            <OperatingPeriod id="RUT:OperatingPeriod:2017" version="1">
+                                <FromDate>2017-01-01T08:00:00</FromDate>
+                                <ToDate>2017-12-31T15:00:00</ToDate>
+                            </OperatingPeriod>
+                        </operatingPeriods>
+                        <dayTypeAssignments>
+                            <DayTypeAssignment id="RUT:DayTypeAssignment:1" version="1" order="1">
+                                <OperatingPeriodRef ref="RUT:OperatingPeriod:2017"/>
+                                <DayTypeRef ref="RUT:DayType:MonSat"/>
+                            </DayTypeAssignment>
+                        </dayTypeAssignments>
+                    </ServiceCalendar>
+                </ServiceCalendarFrame>
+
+
+                <!-- Timetable, that is, departure times etc. -->
+                <TimetableFrame version="1" id="RUT:TimetableFrame:TF02">
+                    <vehicleJourneys>
+                        <!--
+                        TemplateServiceJourney is defined here. It specifies that departure times are the same, but
+                        in this case they follow a rhythmical pattern (every 15 minutes past whole hours)
+                        -->
+                        <TemplateServiceJourney version="1" id="RUT:TemplateServiceJourney:0061">
+                            <PrivateCode>test</PrivateCode>
+                            <DepartureTime>08:00:00</DepartureTime>
+                            <dayTypes>
+                                <!--
+                                Refers to a daytype, which in this case is Monday-Saturday. It is possible to list each daytype
+                                separately, but that would require all to be listed here.
+                                -->
+                                <DayTypeRef version="1" ref="RUT:DayType:MonSat"/>
+                            </dayTypes>
+                            <JourneyPatternRef version="1" ref="RUT:JourneyPattern:0061101"/>
+                            <JourneyFrequencyGroupRef version="1" ref="RUT:RhythmicalJourneyGroup:1"/>
+                            <passingTimes>
+                                <TimetabledPassingTime version="1" id="RUT:TimetabledPassingTime:xx15">
+                                    <!-- Tveita T -->
+                                    <StopPointInJourneyPatternRef version="1" ref="RUT:StopPointInJourneyPattern:0061101001" />
+                                    <DepartureTime>00:00:00</DepartureTime>
+                                </TimetabledPassingTime>
+                                 <TimetabledPassingTime version="1" id="RUT:TimetabledPassingTime:xx31">
+                                    <!-- Lindome -->
+                                  <StopPointInJourneyPatternRef ref="RUT:StopPointInJourneyPattern:0061101007"/>
+                                 <ArrivalTime>03:15:00</ArrivalTime>
+                             </TimetabledPassingTime>
+                            </passingTimes>
+                            <TemplateVehicleJourneyType>headway</TemplateVehicleJourneyType>
+
+                            <frequencyGroups>
+                                <RhythmicalJourneyGroup version="1" id="RUT:RhythmicalJourneyGroup:1">
+                                    <Name>Every third hour</Name>
+                                    <!-- First departure of the day (all days in the daytype) -->
+                                    <FirstDepartureTime>08:00:00</FirstDepartureTime>
+                                    <!-- Last departure of the day (all days in the daytype) -->
+                                    <LastDepartureTime>20:00:00</LastDepartureTime>
+                                    <timebands>
+                                        <TimebandRef version="1" ref="RUT:Timeband:TM15"/>
+                                    </timebands>
+                                </RhythmicalJourneyGroup>
+                            </frequencyGroups>
+                        </TemplateServiceJourney>
+                    </vehicleJourneys>
+
+                </TimetableFrame>
+            </frames>
+        </CompositeFrame>
+    </dataObjects>
+</PublicationDelivery>
