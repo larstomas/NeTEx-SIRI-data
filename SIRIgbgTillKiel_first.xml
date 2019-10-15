@@ -24,10 +24,10 @@
                     </FramedVehicleJourneyRef>
                     <JourneyPatternRef>500:103</JourneyPatternRef>
                     <PublishedLineName>500</PublishedLineName>
-                    <OperatorRef>Stena Line</OperatorRef>
+                    <OperatorRef>Stena_Line</OperatorRef>
                     <Monitored>true</Monitored>
                     <!--MonitoringError/-->
-                    <BlockRef>Stena Line:50003:3</BlockRef>
+                    <BlockRef>Stena_Line:50003:3</BlockRef>
                     <EstimatedCalls>
                         <EstimatedCall>
                             <StopPointRef>NSR:Quay:9682</StopPointRef>
@@ -35,9 +35,9 @@
                             <Order>1</Order>
                             <StopPointName>Gothenburg</StopPointName>
                             <DestinationDisplay>Kiel</DestinationDisplay>
-                            <ExpectedArrivalTime>2017-08-15T11:11:15:15.28+02:00</ExpectedArrivalTime>
+                            <ExpectedArrivalTime>2017-08-15T11:11:15.15+02:00</ExpectedArrivalTime>
                             <AimedDepartureTime>2017-08-15T11:08:00+02:00</AimedDepartureTime>
-                            <ExpectedDepartureTime>2017-08-15T08:05:15.28+02:00</ExpectedDepartureTime>
+                            <ExpectedDepartureTime>2017-08-15T11:08:05.15+02:00</ExpectedDepartureTime>
                             <DeparturePlatformName>1</DeparturePlatformName>
                         </EstimatedCall>
                         <EstimatedCall>
